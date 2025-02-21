@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academic Schedule Dashboard</title>
+    <title>Academic Schedule Dashboard - Enhanced Version</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -33,6 +33,28 @@
             background-size: 60px 60px;
         }
 
+        .session-info {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .datetime {
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .user-info {
+            color: var(--accent-red);
+            font-weight: 500;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -53,21 +75,52 @@
             overflow: hidden;
         }
 
-        .profile-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M10,10 L20,20 M30,30 L40,40'/%3E%3C/svg%3E");
-            opacity: 0.1;
-            animation: backgroundMove 30s linear infinite;
+        .search-filter-section {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px var(--shadow);
         }
 
-        @keyframes backgroundMove {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-blue);
         }
 
         .profile-icon {
@@ -81,6 +134,11 @@
             border-radius: 50%;
             position: relative;
             z-index: 1;
+            transition: transform 0.3s;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
         }
 
         .profile-info {
@@ -122,6 +180,11 @@
             background: white;
             border-radius: 12px;
             box-shadow: 0 4px 15px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .schedule-day:hover {
+            transform: translateY(-3px);
         }
 
         .day-header {
@@ -131,6 +194,9 @@
             font-size: 1.2rem;
             font-weight: 600;
             border-radius: 12px 12px 0 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .course-item {
@@ -154,6 +220,9 @@
         .time-slot {
             font-weight: 500;
             color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .course-name {
@@ -164,15 +233,31 @@
         .room-number {
             color: var(--primary-blue);
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .lecturer-name {
             color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .notes {
             font-style: italic;
             color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-red);
+            font-style: italic;
+            background: rgba(220,53,69,0.05);
+            border-radius: 12px;
+            margin: 1rem 0;
         }
 
         .decoration {
@@ -193,6 +278,24 @@
             font-size: 1.5rem;
         }
 
+        .keyboard-shortcuts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px var(--shadow);
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            z-index: 1000;
+            display: none;
+        }
+
+        .keyboard-shortcuts.show {
+            display: block;
+        }
+
         @media (max-width: 768px) {
             .course-item {
                 grid-template-columns: 1fr;
@@ -203,10 +306,33 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+
+            .session-info {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="session-info">
+        <div class="datetime" id="currentDateTime">
+            Current Date and Time (UTC): Loading...
+        </div>
+        <div class="user-info" id="userInfo">
+            Current User: Loading...
+        </div>
+    </div>
+
     <div class="container">
         <div class="profile-section">
             <div class="decoration books">
@@ -227,13 +353,49 @@
 
         <div class="schedule-container">
             <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
+            
+            <div class="search-filter-section">
+                <div class="search-box">
+                    <input type="text" 
+                           id="searchInput" 
+                           class="search-input" 
+                           placeholder="Search by course name, lecturer, or room...">
+                </div>
+                <div class="filters">
+                    <select id="lecturerFilter" class="filter-select">
+                        <option value="">All Lecturers</option>
+                    </select>
+                    <select id="roomFilter" class="filter-select">
+                        <option value="">All Rooms</option>
+                    </select>
+                    <select id="dayFilter" class="filter-select">
+                        <option value="">All Days</option>
+                        <option value="Senin">Senin</option>
+                        <option value="Selasa">Selasa</option>
+                        <option value="Rabu">Rabu</option>
+                        <option value="Kamis">Kamis</option>
+                        <option value="Jumat">Jumat</option>
+                        <option value="Sabtu">Sabtu</option>
+                    </select>
+                    <select id="timeFilter" class="filter-select">
+                        <option value="">All Times</option>
+                    </select>
+                </div>
+            </div>
+
             <div class="schedule-wrapper" id="scheduleContent">
                 <!-- Schedule content will be populated here -->
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
+    <div class="keyboard-shortcuts" id="keyboardShortcuts">
+        <div><strong>Shortcuts:</strong></div>
+        <div>Ctrl/Cmd + F: Focus Search</div>
+        <div>Esc: Clear Filters</div>
+        <div>?: Show/Hide Shortcuts</div>
+    </div>
+
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -255,7 +417,184 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Function to fetch and display user profile
+        let allScheduleData = [];
+
+        // Function to format date in YYYY-MM-DD HH:MM:SS format
+        function formatDateTime(date) {
+            return date.toISOString().slice(0, 19).replace('T', ' ');
+        }
+
+        // Function to update current date and time
+        function updateDateTime() {
+            const now = new Date();
+            const formatted = formatDateTime(now);
+            document.getElementById('currentDateTime').textContent = 
+                `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${formatted}`;
+            document.getElementById('userInfo').textContent = 
+                `Current User's Login: elnathanwebsite`;
+        }
+
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial call
+
+        // Function to populate filter options
+        function populateFilterOptions(data) {
+            const lecturers = new Set();
+            const rooms = new Set();
+            const times = new Set();
+
+            data.forEach(item => {
+                lecturers.add(item.lecturer);
+                rooms.add(item.room);
+                times.add(`${item.timeStart} - ${item.timeEnd}`);
+            });
+
+            const lecturerSelect = document.getElementById('lecturerFilter');
+            const roomSelect = document.getElementById('roomFilter');
+            const timeSelect = document.getElementById('timeFilter');
+
+            // Clear existing options except the first one
+            while (lecturerSelect.options.length > 1) lecturerSelect.remove(1);
+            while (roomSelect.options.length > 1) roomSelect.remove(1);
+            while (timeSelect.options.length > 1) timeSelect.remove(1);
+
+            // Add new options
+            [...lecturers].sort().forEach(lecturer => {
+                lecturerSelect.add(new Option(lecturer, lecturer));
+            });
+
+            [...rooms].sort().forEach(room => {
+                roomSelect.add(new Option(room, room));
+            });
+
+            [...times].sort().forEach(time => {
+                timeSelect.add(new Option(time, time));
+            });
+        }
+
+        // Function to filter and display schedule
+        function filterAndDisplaySchedule() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedLecturer = document.getElementById('lecturerFilter').value;
+            const selectedRoom = document.getElementById('roomFilter').value;
+            const selectedDay = document.getElementById('dayFilter').value;
+            const selectedTime = document.getElementById('timeFilter').value;
+
+            const filteredData = allScheduleData.filter(item => {
+                const matchesSearch = (
+                    item.courseName.toLowerCase().includes(searchTerm) ||
+                    item.lecturer.toLowerCase().includes(searchTerm) ||
+                    item.room.toLowerCase().includes(searchTerm)
+                );
+                
+                const matchesLecturer = !selectedLecturer || item.lecturer === selectedLecturer;
+                const matchesRoom = !selectedRoom || item.room === selectedRoom;
+                const matchesDay = !selectedDay || item.day === selectedDay;
+                const matchesTime = !selectedTime || `${item.timeStart} - ${item.timeEnd}` === selectedTime;
+
+                return matchesSearch && matchesLecturer && matchesRoom && matchesDay && matchesTime;
+            });
+
+            displaySchedule(filteredData);
+        }
+
+        // Function to display schedule
+        function displaySchedule(data) {
+            const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            let scheduleHTML = '';
+
+            if (data.length === 0) {
+                scheduleHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        No schedules found matching your criteria
+                    </div>`;
+            } else {
+                days.forEach(day => {
+                    const daySchedule = data.filter(item => item.day === day);
+                    
+                    if (daySchedule.length > 0) {
+                        scheduleHTML += `
+                            <div class="schedule-day">
+                                <div class="day-header">
+                                    <i class="fas fa-calendar-day"></i> ${day}
+                                </div>
+                        `;
+
+                        daySchedule
+                            .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
+                            .forEach(course => {
+                                scheduleHTML += `
+                                    <div class="course-item">
+                                        <div class="time-slot">
+                                            <i class="far fa-clock"></i>
+                                            ${course.timeStart} - ${course.timeEnd}
+                                        </div>
+                                        <div class="course-name">
+                                            <i class="fas fa-book-open"></i>
+                                            ${course.courseName}
+                                        </div>
+                                        <div class="room-number">
+                                            <i class="fas fa-door-open"></i> 
+                                            ${course.room}
+                                        </div>
+                                        <div class="lecturer-name">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                            ${course.lecturer}
+                                        </div>
+                                        <div class="notes">
+                                            ${course.notes ? `<i class="fas fa-sticky-note"></i> ${course.notes}` : '-'}
+                                        </div>
+                                    </div>
+                                `;
+                            });
+
+                        scheduleHTML += '</div>';
+                    }
+                });
+            }
+
+            document.getElementById('scheduleContent').innerHTML = scheduleHTML;
+        }
+
+        // Function to clear all filters
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('lecturerFilter').value = '';
+            document.getElementById('roomFilter').value = '';
+            document.getElementById('dayFilter').value = '';
+            document.getElementById('timeFilter').value = '';
+            filterAndDisplaySchedule();
+        }
+
+        // Function to toggle keyboard shortcuts display
+        function toggleKeyboardShortcuts() {
+            const shortcuts = document.getElementById('keyboardShortcuts');
+            shortcuts.classList.toggle('show');
+        }
+
+        // Function to load schedule data
+        function loadSchedule() {
+            const scheduleRef = ref(database, 'schedule');
+            onValue(scheduleRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    allScheduleData = Object.values(data);
+                    populateFilterOptions(allScheduleData);
+                    filterAndDisplaySchedule();
+                }
+            }, (error) => {
+                console.error('Error loading schedule:', error);
+                document.getElementById('scheduleContent').innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error loading schedule data. Please try again later.
+                    </div>`;
+            });
+        }
+
+        // Function to load user profile
         function loadUserProfile() {
             const profileRef = ref(database, 'profiles/current');
             onValue(profileRef, (snapshot) => {
@@ -265,67 +604,56 @@
                     document.getElementById('studentMajor').textContent = data.major;
                     document.getElementById('studentSemester').textContent = `Semester ${data.semester}`;
                 }
+            }, (error) => {
+                console.error('Error loading profile:', error);
+                document.getElementById('studentName').textContent = 'Error loading profile';
+                document.getElementById('studentMajor').textContent = 'Please try again later';
+                document.getElementById('studentSemester').textContent = '';
             });
         }
 
-        // Function to fetch and display schedule
-        function loadSchedule() {
-            const scheduleRef = ref(database, 'schedule');
-            onValue(scheduleRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-                    let scheduleHTML = '';
-
-                    days.forEach(day => {
-                        const daySchedule = Object.values(data).filter(item => item.day === day);
-                        
-                        if (daySchedule.length > 0) {
-                            scheduleHTML += `
-                                <div class="schedule-day">
-                                    <div class="day-header">
-                                        <i class="fas fa-calendar-day"></i> ${day}
-                                    </div>
-                            `;
-
-                            daySchedule
-                                .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
-                                .forEach(course => {
-                                    scheduleHTML += `
-                                        <div class="course-item">
-                                            <div class="time-slot">
-                                                ${course.timeStart} - ${course.timeEnd}
-                                            </div>
-                                            <div class="course-name">
-                                                ${course.courseName}
-                                            </div>
-                                            <div class="room-number">
-                                                <i class="fas fa-door-open"></i> ${course.room}
-                                            </div>
-                                            <div class="lecturer-name">
-                                                <i class="fas fa-chalkboard-teacher"></i> ${course.lecturer}
-                                            </div>
-                                            <div class="notes">
-                                                ${course.notes || '-'}
-                                            </div>
-                                        </div>
-                                    `;
-                                });
-
-                            scheduleHTML += '</div>';
-                        }
-                    });
-
-                    document.getElementById('scheduleContent').innerHTML = scheduleHTML;
-                }
-            });
-        }
-
-        // Load data when page loads
+        // Initialize application
         document.addEventListener('DOMContentLoaded', () => {
+            // Load initial data
             loadUserProfile();
             loadSchedule();
+
+            // Add event listeners for filters
+            document.getElementById('searchInput').addEventListener('input', filterAndDisplaySchedule);
+            document.getElementById('lecturerFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('roomFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('dayFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('timeFilter').addEventListener('change', filterAndDisplaySchedule);
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + F to focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                // Esc to clear filters
+                if (e.key === 'Escape') {
+                    clearAllFilters();
+                }
+                // ? to toggle keyboard shortcuts
+                if (e.key === '?') {
+                    toggleKeyboardShortcuts();
+                }
+            });
+
+            // Add offline/online handlers
+            window.addEventListener('online', () => {
+                document.body.style.opacity = '1';
+                loadSchedule(); // Refresh data when coming back online
+            });
+
+            window.addEventListener('offline', () => {
+                document.body.style.opacity = '0.7';
+                alert('You are currently offline. Some features may be limited.');
+            });
         });
+
     </script>
 </body>
 </html>
