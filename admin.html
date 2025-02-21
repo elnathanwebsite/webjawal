@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Schedule Management</title>
+    <title>Academic Schedule Dashboard - Enhanced Version</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        
         :root {
             --primary-blue: #1a73e8;
             --accent-red: #dc3545;
             --background-light: #f8f9fa;
             --text-dark: #2c3e50;
             --shadow: rgba(0, 0, 0, 0.1);
-            --success: #28a745;
         }
 
         * {
@@ -29,159 +29,429 @@
             color: var(--text-dark);
             min-height: 100vh;
             padding: 2rem;
+            background-image: linear-gradient(45deg, rgba(26,115,232,0.05) 25%, transparent 25%),
+                            linear-gradient(-45deg, rgba(220,53,69,0.05) 25%, transparent 25%);
+            background-size: 60px 60px;
+        }
+
+        .session-info {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .datetime {
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .user-info {
+            color: var(--accent-red);
+            font-weight: 500;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            display: grid;
-            gap: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px var(--shadow);
+            overflow: hidden;
         }
 
-        .card {
-            background: white;
-            border-radius: 15px;
+        .profile-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-red));
+            color: white;
             padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-filter-section {
+            padding: 1.5rem 2rem;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 2rem;
             box-shadow: 0 4px 15px var(--shadow);
         }
 
-        .card h2 {
-            color: var(--primary-blue);
+        .search-box {
+            display: flex;
+            gap: 1rem;
             margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-blue);
+        }
+
+        .profile-icon {
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .profile-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .schedule-container {
+            padding: 2rem;
+        }
+
+        .schedule-container h1 {
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .schedule-wrapper {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .schedule-day {
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .schedule-day:hover {
+            transform: translateY(-3px);
+        }
+
+        .day-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-blue);
-        }
-
-        button {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 500;
+        .course-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr;
+            gap: 1rem;
+            align-items: center;
             transition: background-color 0.3s;
         }
 
-        button:hover {
-            background: #1557b0;
+        .course-item:hover {
+            background-color: rgba(26,115,232,0.05);
         }
 
-        .schedule-list {
-            margin-top: 2rem;
+        .course-item:last-child {
+            border-bottom: none;
         }
 
-        .schedule-item {
-            background: var(--background-light);
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 1rem;
+        .time-slot {
+            font-weight: 500;
+            color: var(--accent-red);
+            display: flex;
             align-items: center;
+            gap: 0.5rem;
         }
 
-        .schedule-item:hover {
-            background: #eef2ff;
+        .course-name {
+            font-weight: 600;
+            color: var(--text-dark);
         }
 
-        .delete-btn {
-            background: var(--accent-red);
-            padding: 0.5rem 1rem;
+        .room-number {
+            color: var(--primary-blue);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .delete-btn:hover {
-            background: #c82333;
+        .lecturer-name {
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .alert {
-            padding: 1rem;
+        .notes {
+            font-style: italic;
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: var(--accent-red);
+            font-style: italic;
+            background: rgba(220,53,69,0.05);
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .decoration.books {
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+        }
+
+        .decoration.pencil {
+            left: 20px;
+            bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .keyboard-shortcuts {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
             border-radius: 8px;
-            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px var(--shadow);
+            font-size: 0.8rem;
+            color: var(--text-dark);
+            z-index: 1000;
             display: none;
         }
 
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+        .keyboard-shortcuts.show {
+            display: block;
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
+            .course-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
             }
 
-            .schedule-item {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .filters {
                 grid-template-columns: 1fr;
             }
+
+            .session-info {
+                flex-direction: column;
+                gap: 5px;
+                text-align: center;
+            }
         }
+        /* Tambahkan style untuk menu */
+    .top-menu {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .menu-button {
+        background: var(--primary-blue);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        box-shadow: 0 2px 10px var(--shadow);
+    }
+
+    .menu-items {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px var(--shadow);
+        padding: 10px 0;
+        min-width: 200px;
+        display: none;
+    }
+
+    .menu-items.show {
+        display: block;
+    }
+
+    .menu-item {
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-dark);
+        text-decoration: none;
+        transition: background-color 0.3s;
+    }
+
+    .menu-item:hover {
+        background-color: var(--background-light);
+    }
+
+    .menu-separator {
+        height: 1px;
+        background-color: #ddd;
+        margin: 5px 0;
+    }
     </style>
 </head>
+<div class="top-menu">
+    <button class="menu-button" id="menuButton">
+        <i class="fas fa-bars"></i>
+    </button>
+    <div class="menu-items" id="menuItems">
+        <a href="#" class="menu-item" data-action="profile">
+            <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="admin.html" class="menu-item" data-action="settings">
+            <i class="fas fa-cog"></i> Settings
+        </a>
+        <div class="menu-separator"></div>
+        <a href="#" class="menu-item" data-action="notifications">
+            <i class="fas fa-bell"></i> Notifications
+        </a>
+        <a href="#" class="menu-item" data-action="help">
+            <i class="fas fa-question-circle"></i> Help
+        </a>
+        <div class="menu-separator"></div>
+        <a href="#" class="menu-item" data-action="logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</div>
+
+
 <body>
+    <div class="session-info">
+        <div class="datetime" id="currentDateTime">
+            Current Date and Time (UTC): Loading...
+        </div>
+        <div class="user-info" id="userInfo">
+            Current User: Loading...
+        </div>
+    </div>
+
     <div class="container">
-        <!-- Profile Section -->
-        <div class="card">
-            <h2><i class="fas fa-user-graduate"></i> Profile Management</h2>
-            <div class="alert alert-success" id="profileAlert">Profile updated successfully!</div>
-            <form id="profileForm">
-                <div class="form-group">
-                    <label for="studentName">Student Name</label>
-                    <input type="text" id="studentName" required>
-                </div>
-                <div class="form-group">
-                    <label for="major">Major</label>
-                    <input type="text" id="major" required>
-                </div>
-                <div class="form-group">
-                    <label for="semester">Semester</label>
-                    <input type="number" id="semester" min="1" max="14" required>
-                </div>
-                <button type="submit">Update Profile</button>
-            </form>
+        <div class="profile-section">
+            <div class="decoration books">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="decoration pencil">
+                <i class="fas fa-pencil-alt"></i>
+            </div>
+            <div class="profile-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="profile-info">
+                <h2 id="studentName">Loading...</h2>
+                <p id="studentMajor">Loading...</p>
+                <p id="studentSemester">Loading...</p>
+            </div>
         </div>
 
-        <!-- Schedule Section -->
-        <div class="card">
-            <h2><i class="fas fa-calendar-alt"></i> Schedule Management</h2>
-            <div class="alert alert-success" id="scheduleAlert">Schedule updated successfully!</div>
-            <form id="scheduleForm">
-                <div class="form-group">
-                    <label for="day">Day</label>
-                    <select id="day" required>
+        <div class="schedule-container">
+            <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
+            
+            <div class="search-filter-section">
+                <div class="search-box">
+                    <input type="text" 
+                           id="searchInput" 
+                           class="search-input" 
+                           placeholder="Search by course name, lecturer, or room...">
+                </div>
+                <div class="filters">
+                    <select id="lecturerFilter" class="filter-select">
+                        <option value="">All Lecturers</option>
+                    </select>
+                    <select id="roomFilter" class="filter-select">
+                        <option value="">All Rooms</option>
+                    </select>
+                    <select id="dayFilter" class="filter-select">
+                        <option value="">All Days</option>
                         <option value="Senin">Senin</option>
                         <option value="Selasa">Selasa</option>
                         <option value="Rabu">Rabu</option>
@@ -189,44 +459,29 @@
                         <option value="Jumat">Jumat</option>
                         <option value="Sabtu">Sabtu</option>
                     </select>
+                    <select id="timeFilter" class="filter-select">
+                        <option value="">All Times</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="timeStart">Start Time</label>
-                    <input type="time" id="timeStart" required>
-                </div>
-                <div class="form-group">
-                    <label for="timeEnd">End Time</label>
-                    <input type="time" id="timeEnd" required>
-                </div>
-                <div class="form-group">
-                    <label for="courseName">Course Name</label>
-                    <input type="text" id="courseName" required>
-                </div>
-                <div class="form-group">
-                    <label for="room">Room</label>
-                    <input type="text" id="room" required>
-                </div>
-                <div class="form-group">
-                    <label for="lecturer">Lecturer</label>
-                    <input type="text" id="lecturer" required>
-                </div>
-                <div class="form-group">
-                    <label for="notes">Notes (Optional)</label>
-                    <input type="text" id="notes">
-                </div>
-                <button type="submit">Add Schedule</button>
-            </form>
+            </div>
 
-            <div class="schedule-list" id="scheduleList">
-                <!-- Schedule items will be displayed here -->
+            <div class="schedule-wrapper" id="scheduleContent">
+                <!-- Schedule content will be populated here -->
             </div>
         </div>
+    </div>
+
+    <div class="keyboard-shortcuts" id="keyboardShortcuts">
+        <div><strong>Shortcuts:</strong></div>
+        <div>Ctrl/Cmd + F: Focus Search</div>
+        <div>Esc: Clear Filters</div>
+        <div>?: Show/Hide Shortcuts</div>
     </div>
 
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -244,115 +499,291 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        // Profile Management
-        const profileForm = document.getElementById('profileForm');
-        const profileAlert = document.getElementById('profileAlert');
+        let allScheduleData = [];
 
-        // Load existing profile
-        onValue(ref(database, 'profiles/current'), (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                document.getElementById('studentName').value = data.name || '';
-                document.getElementById('major').value = data.major || '';
-                document.getElementById('semester').value = data.semester || '';
-            }
-        });
-
-        // Update profile
-        profileForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const profileData = {
-                name: document.getElementById('studentName').value,
-                major: document.getElementById('major').value,
-                semester: parseInt(document.getElementById('semester').value)
-            };
-
-            set(ref(database, 'profiles/current'), profileData)
-                .then(() => {
-                    showAlert(profileAlert, 'Profile updated successfully!');
-                })
-                .catch((error) => {
-                    showAlert(profileAlert, 'Error updating profile: ' + error.message, true);
-                });
-        });
-
-        // Schedule Management
-        const scheduleForm = document.getElementById('scheduleForm');
-        const scheduleAlert = document.getElementById('scheduleAlert');
-        const scheduleList = document.getElementById('scheduleList');
-
-        // Load existing schedules
-        onValue(ref(database, 'schedule'), (snapshot) => {
-            const data = snapshot.val();
-            scheduleList.innerHTML = '';
-            
-            if (data) {
-                Object.entries(data).forEach(([key, schedule]) => {
-                    const scheduleItem = document.createElement('div');
-                    scheduleItem.className = 'schedule-item';
-                    scheduleItem.innerHTML = `
-                        <div>
-                            <strong>${schedule.day}</strong> - ${schedule.timeStart} to ${schedule.timeEnd}<br>
-                            ${schedule.courseName} (${schedule.room})<br>
-                            Lecturer: ${schedule.lecturer}
-                        </div>
-                        <button class="delete-btn" data-id="${key}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    `;
-                    scheduleList.appendChild(scheduleItem);
-                });
-
-                // Add delete event listeners
-                document.querySelectorAll('.delete-btn').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        const scheduleId = e.target.closest('.delete-btn').dataset.id;
-                        if (confirm('Are you sure you want to delete this schedule?')) {
-                            remove(ref(database, `schedule/${scheduleId}`))
-                                .then(() => {
-                                    showAlert(scheduleAlert, 'Schedule deleted successfully!');
-                                })
-                                .catch((error) => {
-                                    showAlert(scheduleAlert, 'Error deleting schedule: ' + error.message, true);
-                                });
-                        }
-                    });
-                });
-            }
-        });
-
-        // Add new schedule
-        scheduleForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const scheduleData = {
-                day: document.getElementById('day').value,
-                timeStart: document.getElementById('timeStart').value,
-                timeEnd: document.getElementById('timeEnd').value,
-                courseName: document.getElementById('courseName').value,
-                room: document.getElementById('room').value,
-                lecturer: document.getElementById('lecturer').value,
-                notes: document.getElementById('notes').value || ''
-            };
-
-            push(ref(database, 'schedule'), scheduleData)
-                .then(() => {
-                    showAlert(scheduleAlert, 'Schedule added successfully!');
-                    scheduleForm.reset();
-                })
-                .catch((error) => {
-                    showAlert(scheduleAlert, 'Error adding schedule: ' + error.message, true);
-                });
-        });
-
-        // Utility function to show alerts
-        function showAlert(alertElement, message, isError = false) {
-            alertElement.textContent = message;
-            alertElement.style.display = 'block';
-            alertElement.className = `alert ${isError ? 'alert-error' : 'alert-success'}`;
-            setTimeout(() => {
-                alertElement.style.display = 'none';
-            }, 3000);
+        // Function to format date in YYYY-MM-DD HH:MM:SS format
+        function formatDateTime(date) {
+            return date.toISOString().slice(0, 19).replace('T', ' ');
         }
+
+        // Function to update current date and time
+        function updateDateTime() {
+            const now = new Date();
+            const formatted = formatDateTime(now);
+            document.getElementById('currentDateTime').textContent = 
+                `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${formatted}`;
+            document.getElementById('userInfo').textContent = 
+                `Current User's Login: elnathanwebsite`;
+        }
+
+        // Update time every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); // Initial call
+
+        // Function to populate filter options
+        function populateFilterOptions(data) {
+            const lecturers = new Set();
+            const rooms = new Set();
+            const times = new Set();
+
+            data.forEach(item => {
+                lecturers.add(item.lecturer);
+                rooms.add(item.room);
+                times.add(`${item.timeStart} - ${item.timeEnd}`);
+            });
+
+            const lecturerSelect = document.getElementById('lecturerFilter');
+            const roomSelect = document.getElementById('roomFilter');
+            const timeSelect = document.getElementById('timeFilter');
+
+            // Clear existing options except the first one
+            while (lecturerSelect.options.length > 1) lecturerSelect.remove(1);
+            while (roomSelect.options.length > 1) roomSelect.remove(1);
+            while (timeSelect.options.length > 1) timeSelect.remove(1);
+
+            // Add new options
+            [...lecturers].sort().forEach(lecturer => {
+                lecturerSelect.add(new Option(lecturer, lecturer));
+            });
+
+            [...rooms].sort().forEach(room => {
+                roomSelect.add(new Option(room, room));
+            });
+
+            [...times].sort().forEach(time => {
+                timeSelect.add(new Option(time, time));
+            });
+        }
+
+        // Function to filter and display schedule
+        function filterAndDisplaySchedule() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedLecturer = document.getElementById('lecturerFilter').value;
+            const selectedRoom = document.getElementById('roomFilter').value;
+            const selectedDay = document.getElementById('dayFilter').value;
+            const selectedTime = document.getElementById('timeFilter').value;
+
+            const filteredData = allScheduleData.filter(item => {
+                const matchesSearch = (
+                    item.courseName.toLowerCase().includes(searchTerm) ||
+                    item.lecturer.toLowerCase().includes(searchTerm) ||
+                    item.room.toLowerCase().includes(searchTerm)
+                );
+                
+                const matchesLecturer = !selectedLecturer || item.lecturer === selectedLecturer;
+                const matchesRoom = !selectedRoom || item.room === selectedRoom;
+                const matchesDay = !selectedDay || item.day === selectedDay;
+                const matchesTime = !selectedTime || `${item.timeStart} - ${item.timeEnd}` === selectedTime;
+
+                return matchesSearch && matchesLecturer && matchesRoom && matchesDay && matchesTime;
+            });
+
+            displaySchedule(filteredData);
+        }
+
+        // Function to display schedule
+        function displaySchedule(data) {
+            const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            let scheduleHTML = '';
+
+            if (data.length === 0) {
+                scheduleHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        No schedules found matching your criteria
+                    </div>`;
+            } else {
+                days.forEach(day => {
+                    const daySchedule = data.filter(item => item.day === day);
+                    
+                    if (daySchedule.length > 0) {
+                        scheduleHTML += `
+                            <div class="schedule-day">
+                                <div class="day-header">
+                                    <i class="fas fa-calendar-day"></i> ${day}
+                                </div>
+                        `;
+
+                        daySchedule
+                            .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
+                            .forEach(course => {
+                                scheduleHTML += `
+                                    <div class="course-item">
+                                        <div class="time-slot">
+                                            <i class="far fa-clock"></i>
+                                            ${course.timeStart} - ${course.timeEnd}
+                                        </div>
+                                        <div class="course-name">
+                                            <i class="fas fa-book-open"></i>
+                                            ${course.courseName}
+                                        </div>
+                                        <div class="room-number">
+                                            <i class="fas fa-door-open"></i> 
+                                            ${course.room}
+                                        </div>
+                                        <div class="lecturer-name">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                            ${course.lecturer}
+                                        </div>
+                                        <div class="notes">
+                                            ${course.notes ? `<i class="fas fa-sticky-note"></i> ${course.notes}` : '-'}
+                                        </div>
+                                    </div>
+                                `;
+                            });
+
+                        scheduleHTML += '</div>';
+                    }
+                });
+            }
+
+            document.getElementById('scheduleContent').innerHTML = scheduleHTML;
+        }
+
+        // Function to clear all filters
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('lecturerFilter').value = '';
+            document.getElementById('roomFilter').value = '';
+            document.getElementById('dayFilter').value = '';
+            document.getElementById('timeFilter').value = '';
+            filterAndDisplaySchedule();
+        }
+
+        // Function to toggle keyboard shortcuts display
+        function toggleKeyboardShortcuts() {
+            const shortcuts = document.getElementById('keyboardShortcuts');
+            shortcuts.classList.toggle('show');
+        }
+
+        // Function to load schedule data
+        function loadSchedule() {
+            const scheduleRef = ref(database, 'schedule');
+            onValue(scheduleRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    allScheduleData = Object.values(data);
+                    populateFilterOptions(allScheduleData);
+                    filterAndDisplaySchedule();
+                }
+            }, (error) => {
+                console.error('Error loading schedule:', error);
+                document.getElementById('scheduleContent').innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error loading schedule data. Please try again later.
+                    </div>`;
+            });
+        }
+
+        // Function to load user profile
+        function loadUserProfile() {
+            const profileRef = ref(database, 'profiles/current');
+            onValue(profileRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('studentName').textContent = data.name;
+                    document.getElementById('studentMajor').textContent = data.major;
+                    document.getElementById('studentSemester').textContent = `Semester ${data.semester}`;
+                }
+            }, (error) => {
+                console.error('Error loading profile:', error);
+                document.getElementById('studentName').textContent = 'Error loading profile';
+                document.getElementById('studentMajor').textContent = 'Please try again later';
+                document.getElementById('studentSemester').textContent = '';
+            });
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load initial data
+            loadUserProfile();
+            loadSchedule();
+
+            // Add event listeners for filters
+            document.getElementById('searchInput').addEventListener('input', filterAndDisplaySchedule);
+            document.getElementById('lecturerFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('roomFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('dayFilter').addEventListener('change', filterAndDisplaySchedule);
+            document.getElementById('timeFilter').addEventListener('change', filterAndDisplaySchedule);
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                // Ctrl/Cmd + F to focus search
+                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                    e.preventDefault();
+                    document.getElementById('searchInput').focus();
+                }
+                // Esc to clear filters
+                if (e.key === 'Escape') {
+                    clearAllFilters();
+                }
+                // ? to toggle keyboard shortcuts
+                if (e.key === '?') {
+                    toggleKeyboardShortcuts();
+                }
+            });
+
+            // Add offline/online handlers
+            window.addEventListener('online', () => {
+                document.body.style.opacity = '1';
+                loadSchedule(); // Refresh data when coming back online
+            });
+
+            window.addEventListener('offline', () => {
+                document.body.style.opacity = '0.7';
+                alert('You are currently offline. Some features may be limited.');
+            });
+        });
+document.addEventListener("DOMContentLoaded", () => {
+    const menuButton = document.getElementById("menuButton");
+    const menuItems = document.getElementById("menuItems");
+
+    // Toggle menu saat tombol diklik
+    menuButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Mencegah event bubbling
+        menuItems.classList.toggle("show");
+    });
+
+    // Tutup menu jika klik di luar menu
+    document.addEventListener("click", (event) => {
+        if (!menuButton.contains(event.target) && !menuItems.contains(event.target)) {
+            menuItems.classList.remove("show");
+        }
+    });
+
+    // Event listener untuk menu item
+    document.querySelectorAll(".menu-item").forEach(item => {
+        item.addEventListener("click", (event) => {
+            event.preventDefault();
+            menuItems.classList.remove("show");
+
+            const action = item.getAttribute("data-action");
+
+            switch(action) {
+                case "profile":
+                    console.log("Navigasi ke Profile");
+                    break;
+                case "settings":
+                    console.log("Navigasi ke Settings");
+                    window.location.href = "admin.html"; // Navigasi ke halaman settings
+                    break;
+                case "notifications":
+                    console.log("Navigasi ke Notifications");
+                    break;
+                case "help":
+                    console.log("Navigasi ke Help");
+                    break;
+                case "logout":
+                    console.log("Logout dipilih");
+                    break;
+                default:
+                    console.log("Menu item tidak dikenali");
+            }
+        });
+    });
+});
+
     </script>
 </body>
 </html>
