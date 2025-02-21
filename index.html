@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Schedule Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --accent-red: #dc3545;
+            --background-light: #f8f9fa;
+            --text-dark: #2c3e50;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 2rem;
+            background-image: linear-gradient(45deg, rgba(26,115,232,0.05) 25%, transparent 25%),
+                            linear-gradient(-45deg, rgba(220,53,69,0.05) 25%, transparent 25%);
+            background-size: 60px 60px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px var(--shadow);
+            overflow: hidden;
+        }
+
+        .profile-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-red));
+            color: white;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='rgba(255,255,255,0.1)' d='M10,10 L20,20 M30,30 L40,40'/%3E%3C/svg%3E");
+            opacity: 0.1;
+            animation: backgroundMove 30s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-icon {
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .profile-info p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .schedule-container {
+            padding: 2rem;
+        }
+
+        .schedule-container h1 {
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .schedule-wrapper {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .schedule-day {
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        .day-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .course-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr;
+            gap: 1rem;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .course-item:hover {
+            background-color: rgba(26,115,232,0.05);
+        }
+
+        .course-item:last-child {
+            border-bottom: none;
+        }
+
+        .time-slot {
+            font-weight: 500;
+            color: var(--accent-red);
+        }
+
+        .course-name {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .room-number {
+            color: var(--primary-blue);
+            font-weight: 500;
+        }
+
+        .lecturer-name {
+            color: var(--text-dark);
+        }
+
+        .notes {
+            font-style: italic;
+            color: #666;
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .decoration.books {
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+        }
+
+        .decoration.pencil {
+            left: 20px;
+            bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .course-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-section">
+            <div class="decoration books">
+                <i class="fas fa-book"></i>
+            </div>
+            <div class="decoration pencil">
+                <i class="fas fa-pencil-alt"></i>
+            </div>
+            <div class="profile-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
+            <div class="profile-info">
+                <h2 id="studentName">Loading...</h2>
+                <p id="studentMajor">Loading...</p>
+                <p id="studentSemester">Loading...</p>
+            </div>
+        </div>
+
+        <div class="schedule-container">
+            <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
+            <div class="schedule-wrapper" id="scheduleContent">
+                <!-- Schedule content will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCgdRhE9IrAwKIsvSZ_C7Y4KevhD9vOZXg",
+            authDomain: "ecomerche-561d2.firebaseapp.com",
+            databaseURL: "https://ecomerche-561d2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "ecomerche-561d2",
+            storageBucket: "ecomerche-561d2.firebasestorage.app",
+            messagingSenderId: "456001161495",
+            appId: "1:456001161495:web:ad052073ab216a3316cf52",
+            measurementId: "G-GJKJHYN7XZ"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Function to fetch and display user profile
+        function loadUserProfile() {
+            const profileRef = ref(database, 'profiles/current');
+            onValue(profileRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    document.getElementById('studentName').textContent = data.name;
+                    document.getElementById('studentMajor').textContent = data.major;
+                    document.getElementById('studentSemester').textContent = `Semester ${data.semester}`;
+                }
+            });
+        }
+
+        // Function to fetch and display schedule
+        function loadSchedule() {
+            const scheduleRef = ref(database, 'schedule');
+            onValue(scheduleRef, (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                    let scheduleHTML = '';
+
+                    days.forEach(day => {
+                        const daySchedule = Object.values(data).filter(item => item.day === day);
+                        
+                        if (daySchedule.length > 0) {
+                            scheduleHTML += `
+                                <div class="schedule-day">
+                                    <div class="day-header">
+                                        <i class="fas fa-calendar-day"></i> ${day}
+                                    </div>
+                            `;
+
+                            daySchedule
+                                .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
+                                .forEach(course => {
+                                    scheduleHTML += `
+                                        <div class="course-item">
+                                            <div class="time-slot">
+                                                ${course.timeStart} - ${course.timeEnd}
+                                            </div>
+                                            <div class="course-name">
+                                                ${course.courseName}
+                                            </div>
+                                            <div class="room-number">
+                                                <i class="fas fa-door-open"></i> ${course.room}
+                                            </div>
+                                            <div class="lecturer-name">
+                                                <i class="fas fa-chalkboard-teacher"></i> ${course.lecturer}
+                                            </div>
+                                            <div class="notes">
+                                                ${course.notes || '-'}
+                                            </div>
+                                        </div>
+                                    `;
+                                });
+
+                            scheduleHTML += '</div>';
+                        }
+                    });
+
+                    document.getElementById('scheduleContent').innerHTML = scheduleHTML;
+                }
+            });
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserProfile();
+            loadSchedule();
+        });
+    </script>
+</body>
+</html>
