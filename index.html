@@ -384,30 +384,26 @@
         <i class="fas fa-bars"></i>
     </button>
     <div class="menu-items" id="menuItems">
-        <a href="#" class="menu-item">
-            <i class="fas fa-user"></i>
-            Profile
+        <a href="#" class="menu-item" data-action="profile">
+            <i class="fas fa-user"></i> Profile
         </a>
-        <a href="admin.html" class="menu-item">
-            <i class="fas fa-cog"></i>
-            Settings
+        <a href="admin.html" class="menu-item" data-action="settings">
+            <i class="fas fa-cog"></i> Settings
         </a>
         <div class="menu-separator"></div>
-        <a href="#" class="menu-item">
-            <i class="fas fa-bell"></i>
-            Notifications
+        <a href="#" class="menu-item" data-action="notifications">
+            <i class="fas fa-bell"></i> Notifications
         </a>
-        <a href="#" class="menu-item">
-            <i class="fas fa-question-circle"></i>
-            Help
+        <a href="#" class="menu-item" data-action="help">
+            <i class="fas fa-question-circle"></i> Help
         </a>
         <div class="menu-separator"></div>
-        <a href="#" class="menu-item">
-            <i class="fas fa-sign-out-alt"></i>
-            Logout
+        <a href="#" class="menu-item" data-action="logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
 </div>
+
 
 <body>
     <div class="session-info">
@@ -739,56 +735,55 @@
                 alert('You are currently offline. Some features may be limited.');
             });
         });
-// Menu toggle functionality
-const menuButton = document.getElementById('menuButton');
-    const menuItems = document.getElementById('menuItems');
+document.addEventListener("DOMContentLoaded", () => {
+    const menuButton = document.getElementById("menuButton");
+    const menuItems = document.getElementById("menuItems");
 
-    menuButton.addEventListener('click', () => {
-        menuItems.classList.toggle('show');
+    // Toggle menu saat tombol diklik
+    menuButton.addEventListener("click", (event) => {
+        event.stopPropagation(); // Mencegah event bubbling
+        menuItems.classList.toggle("show");
     });
 
-    // Close menu when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!menuButton.contains(e.target) && !menuItems.contains(e.target)) {
-            menuItems.classList.remove('show');
+    // Tutup menu jika klik di luar menu
+    document.addEventListener("click", (event) => {
+        if (!menuButton.contains(event.target) && !menuItems.contains(event.target)) {
+            menuItems.classList.remove("show");
         }
     });
 
-    // Handle menu item clicks
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
-            menuItems.classList.remove('show');
-            // Add your menu item functionality here
-            console.log('Clicked:', item.textContent.trim());
+    // Event listener untuk menu item
+    document.querySelectorAll(".menu-item").forEach(item => {
+        item.addEventListener("click", (event) => {
+            event.preventDefault();
+            menuItems.classList.remove("show");
+
+            const action = item.getAttribute("data-action");
+
+            switch(action) {
+                case "profile":
+                    console.log("Navigasi ke Profile");
+                    break;
+                case "settings":
+                    console.log("Navigasi ke Settings");
+                    window.location.href = "admin.html"; // Navigasi ke halaman settings
+                    break;
+                case "notifications":
+                    console.log("Navigasi ke Notifications");
+                    break;
+                case "help":
+                    console.log("Navigasi ke Help");
+                    break;
+                case "logout":
+                    console.log("Logout dipilih");
+                    break;
+                default:
+                    console.log("Menu item tidak dikenali");
+            }
         });
     });
-    document.querySelectorAll('.menu-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        menuItems.classList.remove('show');
-        
-        // Add your menu item functionality here
-        const itemText = item.textContent.trim();
-        switch(itemText) {
-            case 'Profile':
-                // Handle profile click
-                break;
-            case 'Settings':
-                // Handle settings click
-                break;
-            case 'Notifications':
-                // Handle notifications click
-                break;
-            case 'Help':
-                // Handle help click
-                break;
-            case 'Logout':
-                // Handle logout click
-                break;
-        }
-    });
 });
+
     </script>
 </body>
 </html>
