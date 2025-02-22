@@ -8,15 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        
-        :root {
-            --primary-blue: #1a73e8;
-            --accent-red: #dc3545;
-            --background-light: #f8f9fa;
-            --text-dark: #2c3e50;
-            --shadow: rgba(0, 0, 0, 0.1);
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -25,772 +16,255 @@
         }
 
         body {
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            min-height: 100vh;
-            padding: 2rem;
-            background-image: linear-gradient(45deg, rgba(26,115,232,0.05) 25%, transparent 25%),
-                            linear-gradient(-45deg, rgba(220,53,69,0.05) 25%, transparent 25%);
-            background-size: 60px 60px;
-        }
-
-        .session-info {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px var(--shadow);
+            background: #0f0c29;
+            background: linear-gradient(-45deg, #24243e, #0f0c29, #302b63);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            height: 100vh;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.9rem;
-        }
-
-        .datetime {
-            color: var(--primary-blue);
-            font-weight: 500;
-        }
-
-        .user-info {
-            color: var(--accent-red);
-            font-weight: 500;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px var(--shadow);
-            overflow: hidden;
-        }
-
-        .profile-section {
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-red));
-            color: white;
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .search-filter-section {
-            padding: 1.5rem 2rem;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px var(--shadow);
-        }
-
-        .search-box {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 0.8rem;
-            border: 2px solid var(--primary-blue);
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-            transition: box-shadow 0.3s;
-        }
-
-        .search-input:focus {
-            box-shadow: 0 0 0 3px rgba(26,115,232,0.2);
-        }
-
-        .filters {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .filter-select {
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            outline: none;
-            cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        .filter-select:focus {
-            border-color: var(--primary-blue);
-        }
-
-        .profile-icon {
-            font-size: 3rem;
-            background: rgba(255, 255, 255, 0.2);
-            width: 80px;
-            height: 80px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            border-radius: 50%;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.3s;
-        }
-
-        .profile-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .profile-info {
-            position: relative;
-            z-index: 1;
-        }
-
-        .profile-info h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .profile-info p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        .schedule-container {
-            padding: 2rem;
-        }
-
-        .schedule-container h1 {
-            color: var(--primary-blue);
-            margin-bottom: 2rem;
-            display: flex;
             align-items: center;
-            gap: 1rem;
-        }
-
-        .schedule-wrapper {
-            background: white;
-            border-radius: 15px;
             overflow: hidden;
         }
 
-        .schedule-day {
-            margin-bottom: 2rem;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px var(--shadow);
-            transition: transform 0.3s;
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        .schedule-day:hover {
-            transform: translateY(-3px);
-        }
-
-        .day-header {
-            background: var(--primary-blue);
-            color: white;
-            padding: 1rem 1.5rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .course-item {
-            padding: 1.5rem;
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr 1.5fr 2fr;
-            gap: 1rem;
-            align-items: center;
-            transition: background-color 0.3s;
-        }
-
-        .course-item:hover {
-            background-color: rgba(26,115,232,0.05);
-        }
-
-        .course-item:last-child {
-            border-bottom: none;
-        }
-
-        .time-slot {
-            font-weight: 500;
-            color: var(--accent-red);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .course-name {
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .room-number {
-            color: var(--primary-blue);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .lecturer-name {
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .notes {
-            font-style: italic;
-            color: #666;
-        }
-
-        .no-results {
+        .splash-container {
             text-align: center;
-            padding: 2rem;
-            color: var(--accent-red);
-            font-style: italic;
-            background: rgba(220,53,69,0.05);
-            border-radius: 12px;
-            margin: 1rem 0;
+            color: white;
+            position: relative;
+            z-index: 1;
         }
 
-        .decoration {
+        .logo {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .tagline {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+
+        .progress-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
             position: absolute;
-            opacity: 0.1;
-            pointer-events: none;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff87, #60efff);
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
 
-        .decoration.books {
-            right: 20px;
-            top: 20px;
-            font-size: 2rem;
+        .loading-text {
+            font-size: 1.2em;
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 1.1s;
         }
 
-        .decoration.pencil {
-            left: 20px;
-            bottom: 20px;
-            font-size: 1.5rem;
+        /* Particle Effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
-        .keyboard-shortcuts {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+        .particle {
+            position: absolute;
             background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px var(--shadow);
-            font-size: 0.8rem;
-            color: var(--text-dark);
-            z-index: 1000;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .enter-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(90deg, #00ff87, #60efff);
+            border: none;
+            border-radius: 30px;
+            color: #24243e;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards 1.4s;
             display: none;
         }
 
-        .keyboard-shortcuts.show {
-            display: block;
+        .enter-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(96, 239, 255, 0.4);
         }
 
-        @media (max-width: 768px) {
-            .course-item {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-            }
-            
-            .profile-section {
-                flex-direction: column;
-                text-align: center;
-            }
+        /* Glowing dots */
+        .glow {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #60efff;
+            animation: glow 2s ease-in-out infinite;
+        }
 
-            .search-box {
-                flex-direction: column;
+        @keyframes glow {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
             }
-
-            .filters {
-                grid-template-columns: 1fr;
-            }
-
-            .session-info {
-                flex-direction: column;
-                gap: 5px;
-                text-align: center;
+            50% {
+                transform: scale(1.5);
+                opacity: 1;
             }
         }
-        /* Tambahkan style untuk menu */
-    /* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-}
-
-/* Hamburger Menu Button Styles */
-.menu-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #007bff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    transition: background-color 0.3s ease;
-}
-
-.menu-btn:hover {
-    background-color: #0056b3;
-}
-
-.menu-btn i {
-    color: white;
-    font-size: 24px;
-}
-
-/* Menu Content Styles */
-.menu-content {
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    background-color: white;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 999;
-}
-
-.menu-content.active {
-    display: block;
-    animation: fadeIn 0.3s ease;
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s ease;
-}
-
-.menu-item:hover {
-    background-color: #f0f0f0;
-    border-radius: 4px;
-}
-
-.menu-item i {
-    margin-right: 10px;
-    color: #007bff;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
     </style>
 </head>
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Schedule" />
-<link rel="manifest" href="/site.webmanifest" />
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Floating Menu</title>
-<link rel="stylesheet" href="styles.css">
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
 <body>
-<!-- Hamburger Menu Button -->
-<div class="menu-btn" id="menuBtn">
-    <i class="fas fa-bars"></i>
-</div>
-
-<script>
-    <!-- code by https://www.html-code-generator.com -->
-    document.write(unescape('%3C%21--%20Menu%20Content%20--%3E%0A%3Cdiv%20class%3D%22menu-content%22%20id%3D%22menuContent%22%3E%0A%20%20%20%20%3Ca%20href%3D%22admin.html%22%20class%3D%22menu-item%22%3E%0A%20%20%20%20%20%20%20%20%3Ci%20class%3D%22fas%20fa-calendar%22%3E%3C/i%3E%0A%20%20%20%20%20%20%20%20Buat%20Jadwal%0A%20%20%20%20%3C/a%3E%0A%3C/div%3E'));
-    </script>
-    
-
-
-<body>
-    <div class="session-info">
-        <div class="datetime" id="currentDateTime">
-            Current Date and Time (UTC): Loading...
+    <div class="particles"></div>
+    <div class="splash-container">
+        <div class="logo">Buat jadwal</div>
+        <div class="tagline">Welcome to Something Amazing</div>
+        <div class="progress-bar">
+            <div class="progress"></div>
         </div>
-        <div class="user-info" id="userInfo">
-            Current User: Loading...
-        </div>
+        <div class="loading-text">Loading...</div>
+        <button class="enter-button" onclick="enterWebsite()">Enter Website</button>
     </div>
 
-    <div class="container">
-        <div class="profile-section">
-            <div class="decoration books">
-                <i class="fas fa-book"></i>
-            </div>
-            <div class="decoration pencil">
-                <i class="fas fa-pencil-alt"></i>
-            </div>
-            <div class="profile-icon">
-                <i class="fas fa-user-graduate"></i>
-            </div>
-            <div class="profile-info">
-                <h2 id="studentName">Loading...</h2>
-                <p id="studentMajor">Loading...</p>
-                <p id="studentSemester">Loading...</p>
-            </div>
-        </div>
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            const particleCount = 50;
 
-        <div class="schedule-container">
-            <h1><i class="fas fa-calendar-alt"></i> Class Schedule</h1>
-            
-            <div class="search-filter-section">
-                <div class="search-box">
-                    <input type="text" 
-                           id="searchInput" 
-                           class="search-input" 
-                           placeholder="Search by course name, lecturer, or room...">
-                </div>
-                <div class="filters">
-                    <select id="lecturerFilter" class="filter-select">
-                        <option value="">All Lecturers</option>
-                    </select>
-                    <select id="roomFilter" class="filter-select">
-                        <option value="">All Rooms</option>
-                    </select>
-                    <select id="dayFilter" class="filter-select">
-                        <option value="">All Days</option>
-                        <option value="Senin">Senin</option>
-                        <option value="Selasa">Selasa</option>
-                        <option value="Rabu">Rabu</option>
-                        <option value="Kamis">Kamis</option>
-                        <option value="Jumat">Jumat</option>
-                        <option value="Sabtu">Sabtu</option>
-                    </select>
-                    <select id="timeFilter" class="filter-select">
-                        <option value="">All Times</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="schedule-wrapper" id="scheduleContent">
-                <!-- Schedule content will be populated here -->
-            </div>
-        </div>
-    </div>
-
-    <div class="keyboard-shortcuts" id="keyboardShortcuts">
-        <div><strong>Shortcuts:</strong></div>
-        <div>Ctrl/Cmd + F: Focus Search</div>
-        <div>Esc: Clear Filters</div>
-        <div>?: Show/Hide Shortcuts</div>
-    </div>
-
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyCgdRhE9IrAwKIsvSZ_C7Y4KevhD9vOZXg",
-            authDomain: "ecomerche-561d2.firebaseapp.com",
-            databaseURL: "https://ecomerche-561d2-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "ecomerche-561d2",
-            storageBucket: "ecomerche-561d2.firebasestorage.app",
-            messagingSenderId: "456001161495",
-            appId: "1:456001161495:web:ad052073ab216a3316cf52",
-            measurementId: "G-GJKJHYN7XZ"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        let allScheduleData = [];
-
-        // Function to format date in YYYY-MM-DD HH:MM:SS format
-        function formatDateTime(date) {
-            return date.toISOString().slice(0, 19).replace('T', ' ');
-        }
-
-        // Function to update current date and time
-        function updateDateTime() {
-            const now = new Date();
-            const formatted = formatDateTime(now);
-            document.getElementById('currentDateTime').textContent = 
-                `Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): ${formatted}`;
-            document.getElementById('userInfo').textContent = 
-                `Current User's Login: elnathanwebsite`;
-        }
-
-        // Update time every second
-        setInterval(updateDateTime, 1000);
-        updateDateTime(); // Initial call
-
-        // Function to populate filter options
-        function populateFilterOptions(data) {
-            const lecturers = new Set();
-            const rooms = new Set();
-            const times = new Set();
-
-            data.forEach(item => {
-                lecturers.add(item.lecturer);
-                rooms.add(item.room);
-                times.add(`${item.timeStart} - ${item.timeEnd}`);
-            });
-
-            const lecturerSelect = document.getElementById('lecturerFilter');
-            const roomSelect = document.getElementById('roomFilter');
-            const timeSelect = document.getElementById('timeFilter');
-
-            // Clear existing options except the first one
-            while (lecturerSelect.options.length > 1) lecturerSelect.remove(1);
-            while (roomSelect.options.length > 1) roomSelect.remove(1);
-            while (timeSelect.options.length > 1) timeSelect.remove(1);
-
-            // Add new options
-            [...lecturers].sort().forEach(lecturer => {
-                lecturerSelect.add(new Option(lecturer, lecturer));
-            });
-
-            [...rooms].sort().forEach(room => {
-                roomSelect.add(new Option(room, room));
-            });
-
-            [...times].sort().forEach(time => {
-                timeSelect.add(new Option(time, time));
-            });
-        }
-
-        // Function to filter and display schedule
-        function filterAndDisplaySchedule() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedLecturer = document.getElementById('lecturerFilter').value;
-            const selectedRoom = document.getElementById('roomFilter').value;
-            const selectedDay = document.getElementById('dayFilter').value;
-            const selectedTime = document.getElementById('timeFilter').value;
-
-            const filteredData = allScheduleData.filter(item => {
-                const matchesSearch = (
-                    item.courseName.toLowerCase().includes(searchTerm) ||
-                    item.lecturer.toLowerCase().includes(searchTerm) ||
-                    item.room.toLowerCase().includes(searchTerm)
-                );
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
                 
-                const matchesLecturer = !selectedLecturer || item.lecturer === selectedLecturer;
-                const matchesRoom = !selectedRoom || item.room === selectedRoom;
-                const matchesDay = !selectedDay || item.day === selectedDay;
-                const matchesTime = !selectedTime || `${item.timeStart} - ${item.timeEnd}` === selectedTime;
-
-                return matchesSearch && matchesLecturer && matchesRoom && matchesDay && matchesTime;
-            });
-
-            displaySchedule(filteredData);
-        }
-
-        // Function to display schedule
-        function displaySchedule(data) {
-            const days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            let scheduleHTML = '';
-
-            if (data.length === 0) {
-                scheduleHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-search"></i>
-                        No schedules found matching your criteria
-                    </div>`;
-            } else {
-                days.forEach(day => {
-                    const daySchedule = data.filter(item => item.day === day);
-                    
-                    if (daySchedule.length > 0) {
-                        scheduleHTML += `
-                            <div class="schedule-day">
-                                <div class="day-header">
-                                    <i class="fas fa-calendar-day"></i> ${day}
-                                </div>
-                        `;
-
-                        daySchedule
-                            .sort((a, b) => a.timeStart.localeCompare(b.timeStart))
-                            .forEach(course => {
-                                scheduleHTML += `
-                                    <div class="course-item">
-                                        <div class="time-slot">
-                                            <i class="far fa-clock"></i>
-                                            ${course.timeStart} - ${course.timeEnd}
-                                        </div>
-                                        <div class="course-name">
-                                            <i class="fas fa-book-open"></i>
-                                            ${course.courseName}
-                                        </div>
-                                        <div class="room-number">
-                                            <i class="fas fa-door-open"></i> 
-                                            ${course.room}
-                                        </div>
-                                        <div class="lecturer-name">
-                                            <i class="fas fa-chalkboard-teacher"></i>
-                                            ${course.lecturer}
-                                        </div>
-                                        <div class="notes">
-                                            ${course.notes ? `<i class="fas fa-sticky-note"></i> ${course.notes}` : '-'}
-                                        </div>
-                                    </div>
-                                `;
-                            });
-
-                        scheduleHTML += '</div>';
-                    }
-                });
+                // Random size between 2 and 6 pixels
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation
+                const duration = Math.random() * 3 + 2;
+                const delay = Math.random() * 2;
+                
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                particlesContainer.appendChild(particle);
             }
-
-            document.getElementById('scheduleContent').innerHTML = scheduleHTML;
         }
 
-        // Function to clear all filters
-        function clearAllFilters() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('lecturerFilter').value = '';
-            document.getElementById('roomFilter').value = '';
-            document.getElementById('dayFilter').value = '';
-            document.getElementById('timeFilter').value = '';
-            filterAndDisplaySchedule();
+        // Create glowing dots
+        function createGlowingDots() {
+            const container = document.querySelector('.splash-container');
+            const dotCount = 5;
+
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'glow';
+                
+                // Position randomly around the container
+                dot.style.left = `${Math.random() * 100}%`;
+                dot.style.top = `${Math.random() * 100}%`;
+                
+                // Random delay for animation
+                dot.style.animationDelay = `${Math.random() * 2}s`;
+                
+                container.appendChild(dot);
+            }
         }
 
-        // Function to toggle keyboard shortcuts display
-        function toggleKeyboardShortcuts() {
-            const shortcuts = document.getElementById('keyboardShortcuts');
-            shortcuts.classList.toggle('show');
-        }
+        // Progress bar animation
+        function animateProgress() {
+            const progress = document.querySelector('.progress');
+            const loadingText = document.querySelector('.loading-text');
+            const enterButton = document.querySelector('.enter-button');
+            let width = 0;
 
-        // Function to load schedule data
-        function loadSchedule() {
-            const scheduleRef = ref(database, 'schedule');
-            onValue(scheduleRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    allScheduleData = Object.values(data);
-                    populateFilterOptions(allScheduleData);
-                    filterAndDisplaySchedule();
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    loadingText.textContent = 'Loading Complete!';
+                    enterButton.style.display = 'inline-block';
+                } else {
+                    width++;
+                    progress.style.width = width + '%';
+                    loadingText.textContent = `Loading... ${width}%`;
                 }
-            }, (error) => {
-                console.error('Error loading schedule:', error);
-                document.getElementById('scheduleContent').innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Error loading schedule data. Please try again later.
-                    </div>`;
-            });
+            }, 30);
         }
 
-        // Function to load user profile
-        function loadUserProfile() {
-            const profileRef = ref(database, 'profiles/current');
-            onValue(profileRef, (snapshot) => {
-                const data = snapshot.val();
-                if (data) {
-                    document.getElementById('studentName').textContent = data.name;
-                    document.getElementById('studentMajor').textContent = data.major;
-                    document.getElementById('studentSemester').textContent = `Semester ${data.semester}`;
-                }
-            }, (error) => {
-                console.error('Error loading profile:', error);
-                document.getElementById('studentName').textContent = 'Error loading profile';
-                document.getElementById('studentMajor').textContent = 'Please try again later';
-                document.getElementById('studentSemester').textContent = '';
-            });
+        // Enter website function
+        function enterWebsite() {
+            // Replace 'main.html' with your actual main website URL
+            window.location.href = 'dasbord.html';
         }
 
-        // Initialize application
+        // Initialize everything when the page loads
         document.addEventListener('DOMContentLoaded', () => {
-            // Load initial data
-            loadUserProfile();
-            loadSchedule();
-
-            // Add event listeners for filters
-            document.getElementById('searchInput').addEventListener('input', filterAndDisplaySchedule);
-            document.getElementById('lecturerFilter').addEventListener('change', filterAndDisplaySchedule);
-            document.getElementById('roomFilter').addEventListener('change', filterAndDisplaySchedule);
-            document.getElementById('dayFilter').addEventListener('change', filterAndDisplaySchedule);
-            document.getElementById('timeFilter').addEventListener('change', filterAndDisplaySchedule);
-
-            // Add keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                // Ctrl/Cmd + F to focus search
-                if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-                    e.preventDefault();
-                    document.getElementById('searchInput').focus();
-                }
-                // Esc to clear filters
-                if (e.key === 'Escape') {
-                    clearAllFilters();
-                }
-                // ? to toggle keyboard shortcuts
-                if (e.key === '?') {
-                    toggleKeyboardShortcuts();
-                }
-            });
-
-            // Add offline/online handlers
-            window.addEventListener('online', () => {
-                document.body.style.opacity = '1';
-                loadSchedule(); // Refresh data when coming back online
-            });
-
-            window.addEventListener('offline', () => {
-                document.body.style.opacity = '0.7';
-                alert('You are currently offline. Some features may be limited.');
-            });
+            createParticles();
+            createGlowingDots();
+            animateProgress();
         });
-document.addEventListener("DOMContentLoaded", () => {
-    const menuButton = document.getElementById("menuButton");
-    const menuItems = document.getElementById("menuItems");
-
- 
-
-    
-});
-// Get the menu button and menu content elements
-const menuBtn = document.getElementById('menuBtn');
-const menuContent = document.getElementById('menuContent');
-
-// Add click event listener to the menu button
-menuBtn.addEventListener('click', () => {
-    // Toggle the 'active' class on menu content
-    menuContent.classList.toggle('active');
-});
-
-// Close menu when clicking outside
-document.addEventListener('click', (event) => {
-    if (!menuBtn.contains(event.target) && !menuContent.contains(event.target)) {
-        menuContent.classList.remove('active');
-    }
-});
     </script>
 </body>
 </html>
