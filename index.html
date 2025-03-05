@@ -265,6 +265,24 @@
             createGlowingDots();
             animateProgress();
         });
+  
+// Mencegah Klik Kanan
+document.addEventListener("contextmenu", function(event) {
+    event.preventDefault();
+});
+
+// Mencegah kombinasi tombol Developer Tools
+document.addEventListener("keydown", function(event) {
+    if (
+        event.ctrlKey && (event.key === "u" || event.key === "U") || // CTRL + U
+        event.key === "F12" || // Tombol F12
+        (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) // CTRL + SHIFT + I atau CTRL + SHIFT + J
+    ) {
+        event.preventDefault();
+    }
+});
+
+
     </script>
 </body>
 </html>
